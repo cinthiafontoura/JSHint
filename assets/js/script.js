@@ -37,32 +37,37 @@ function displayErros(data) {
       results += `<div> At line <span class="line">${error.line}</span>, `
       results += `column <span class="column">${error.col}</span></div>`
       results += `<div class+"erroe">${error.error}</div>`
+    }
+
+    document.getElementById("resultsModalTitle").innerText = heading
+    document.getElementById("results-content").innerHTML = results
+
+    resultModal.show()
   }
 
-}
+  async function getStatus(e) {
+    const querryString = `${API_URL}?api_key=${API_KEY}`
 
-async function getStatus(e) {
-  const querryString = `${API_URL}?api_key=${API_KEY}`
+    const response = await fetch(querryString)
 
-  const response = await fetch(querryString)
+    const data = await response.json()
 
-  const data = await response.json()
-
-  if(response.ok) {
+    if (response.ok) {
       displayStatus(data)
-  } else {
-    throw new Error(data.error)
+    } else {
+      throw new Error(data.error)
+    }
   }
-}
 
-function displayStatus(data) {
+  function displayStatus(data) {
 
-  let heading = "API Key Status"
-  let results = `<div>Your key is valid until</div>`
-  results += `<div class="key-status">${data.expiry}</div>`
+    let heading = "API Key Status"
+    let results = `<div>Your key is valid until</div>`
+    results += `<div class="key-status">${data.expiry}</div>`
 
-  document.getElementById("resultsModalTitle").innerText = heading
-  document.getElementById("results-content").innerHTML = results
+    document.getElementById("resultsModalTitle").innerText = heading
+    document.getElementById("results-content").innerHTML = results
 
-  resultModal.show()
+    resultModal.show()
+  }
 }
